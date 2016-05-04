@@ -1,6 +1,6 @@
 # INDA Project: Web crawler
 
-This web crawler project aims at creating a program that is capable of mapping websites. The crawler itself will be written in Go, and support tools are most likely going to be written in Python.
+This web crawler project aims at creating a program that is capable of mapping websites by finding hyperlinks, pointing to other subpages of the current domain, on the page. The crawler itself will be written in Go, and support tools are most likely going to be written in Python.
 
 ## Core features
 
