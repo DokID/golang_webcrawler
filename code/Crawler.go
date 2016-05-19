@@ -2,19 +2,11 @@
 
 package main
 
-import (
-  "fmt"
-  "bufio"
-)
+// A hash map containing the visited URLs
+var visited = make(map[string]bool)
 
-// A variable containing the visited URLs
-var visited []string = {
-
-}
-
-// A variable containing the visited URLs
-var toVisit []string = {
-}
+// A hash map containing the visited URLs
+var toVisit = make(map[string]bool)
 
 // The main function, starts the crawler on a
 // given URL. TODO: add print to a file for all
