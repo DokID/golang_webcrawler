@@ -3,7 +3,7 @@
 package main
 
 import (
-	"crawler"
+	"inda-project/code/crawler"
 )
 
 // A hash map containing the visited URLs
@@ -19,5 +19,5 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page.html"
 // given URL. TODO: add print to a file for all
 // visited URLs.
 func main() {
-	crawler.crawl(startURL)
+	crawler.Crawl(startURL)
 }

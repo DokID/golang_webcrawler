@@ -10,7 +10,7 @@ import (
 )
 
 // Crawls the given URL looking for more URLs
-func crawl(url string) {
+func Crawl(url string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
