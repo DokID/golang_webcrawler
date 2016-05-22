@@ -3,6 +3,7 @@
 package crawler
 
 import (
+	"container/list"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -10,7 +11,7 @@ import (
 )
 
 // Crawls the given URL looking for more URLs
-func Crawl(url string) {
+func Crawl(url string) *list.List {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
@@ -23,4 +24,5 @@ func Crawl(url string) {
 		log.Fatalf("Error: %v", err)
 	}
 	fmt.Printf("%s", body)
+	return &list.List{}
 }
