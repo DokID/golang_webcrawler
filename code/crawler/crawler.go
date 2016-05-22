@@ -3,31 +3,32 @@
 package crawler
 
 import (
+	"bytes"
 	"container/list"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-// Crawls the given URL looking for more URLs
+// Crawl parses the assigned webpage, looking for URLs and collecting them
+// in a list.
 func Crawl(url string) *list.List {
 	body := getPage(url)
+	fmt.Print(body)
 	return &list.List{}
 }
 
-func getPage(url string) *[]byte {
+func getPage(url string) *string {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Error: %v", err)
 		log.Fatalf("Error: %v", err)
 	}
-	body, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
+	defer resp.Body.Close()
 	if err != nil {
-		fmt.Printf("Error: %v", err)
 		log.Fatalf("Error: %v", err)
 	}
-	log.Printf("%s", body)
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	body := buf.String()
 	return &body
 }
