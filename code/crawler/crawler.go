@@ -12,6 +12,11 @@ import (
 
 // Crawls the given URL looking for more URLs
 func Crawl(url string) *list.List {
+	body := getPage(url)
+	return &list.List{}
+}
+
+func getPage(url string) *[]byte {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
@@ -23,6 +28,6 @@ func Crawl(url string) *list.List {
 		fmt.Printf("Error: %v", err)
 		log.Fatalf("Error: %v", err)
 	}
-	fmt.Printf("%s", body)
-	return &list.List{}
+	log.Printf("%s", body)
+	return &body
 }
