@@ -14,9 +14,11 @@ import (
 
 // Crawl calls and parses the assigned webpage, looking for URLs and collecting
 // them in a list.
-func Crawl(url string) (list *list.List) {
+func Crawl(url string) *list.List {
 	body := getPage(url)
 	defer body.Close()
+	list := new(list.List)
+	list.Init()
 	tokenizer := html.NewTokenizer(body)
 	log.Println("Tokenizer created!")
 
@@ -31,7 +33,7 @@ func Crawl(url string) (list *list.List) {
 				log.Printf("Token Error: %v", tokenizer.Err())
 			}
 			log.Println("Error: EOF")
-			return
+			return list
 		case html.StartTagToken:
 			token := tokenizer.Token()
 			if token.Data != "a" {
