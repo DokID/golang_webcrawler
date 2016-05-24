@@ -17,15 +17,11 @@ import (
 func Crawl(url string) *list.List {
 	body := getPage(url)
 	defer body.Close()
-	list := new(list.List)
-	list.Init()
+	list := list.New()
 	tokenizer := html.NewTokenizer(body)
-	log.Println("Tokenizer created!")
 
 	for {
 		tt := tokenizer.Next()
-
-		log.Printf("%v", tt)
 
 		switch tt {
 		case html.ErrorToken:
