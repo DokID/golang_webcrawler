@@ -45,6 +45,9 @@ func main() {
 				wg1.Done()
 				wg2.Done()
 			}(urlkey, exists)
+			for i := range visited {
+				fmt.Println(i)
+			}
 		}
 		wg1.Wait()
 		// If no more pages left to visit, break
