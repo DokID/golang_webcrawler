@@ -15,13 +15,13 @@ var visited = make(map[string]bool)
 var toVisit = make(map[string]bool)
 
 // The URL to start from
-var startURL = "http://en.wikipedia.org/wiki/Main_Page.html"
+var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 
 // The main function, starts the crawler on a
 // given URL. TODO: add print to a file for all
 // visited URLs.
 func main() {
-	list := new(list.List)
+	list := list.New()
 	list = crawler.Crawl(startURL)
 	for e := list.Front(); e != nil; e.Next() {
 		fmt.Println(e.Value)
