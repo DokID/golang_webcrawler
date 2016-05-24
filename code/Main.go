@@ -43,4 +43,10 @@ func main() {
 			}()
 		}
 	}
+	wg.Wait()
+	for urlkey, exists := range visited {
+		if exists {
+			fmt.Println(urlkey)
+		}
+	}
 }
