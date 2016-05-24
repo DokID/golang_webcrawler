@@ -25,24 +25,28 @@ func Crawl(url string) *list.List {
 
 		switch tt {
 		case html.ErrorToken:
+			// Error, if not EOF, preserve
 			if tokenizer.Err() != io.EOF {
 				log.Printf("Token Error: %v", tokenizer.Err())
 			}
+			// EOF, no more links to be found
 			log.Println("Error: EOF")
 			return list
 		case html.StartTagToken:
+			// Start tag has been located
 			token := tokenizer.Token()
+			// Check if token is an <a> tag
 			if token.Data != "a" {
 				continue
 			}
 
 			log.Println("Token found!")
-
+			// Look for href in token
 			found, href := getHref(token)
 			if !found {
 				continue
 			}
-
+			// Check if href is relevant
 			if strings.Index(href, "/wiki/") == 0 {
 				list.PushFront(href)
 				log.Println("URL located!")
