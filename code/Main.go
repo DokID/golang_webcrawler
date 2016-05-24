@@ -33,11 +33,7 @@ func main() {
 					toVisit[urlkey] = false
 					visited[urlkey] = true
 					tList := crawler.Crawl(urlkey)
-					for i := range tList {
-						if toVisist[i] == false && visited[i] == false {
-							toVisit[i] = true
-						}
-					}
+					controller(tList)
 				}
 				wg.Done()
 			}()
@@ -47,6 +43,14 @@ func main() {
 	for urlkey, exists := range visited {
 		if exists {
 			fmt.Println(urlkey)
+		}
+	}
+}
+
+func controller(list List) {
+	for i := range list {
+		if toVisit[i] == false && visited[i] == false {
+			toVisist[i] = true
 		}
 	}
 }
