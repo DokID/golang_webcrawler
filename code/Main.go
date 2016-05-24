@@ -27,15 +27,18 @@ func main() {
 	for {
 		for urlkey, exists := range toVisit {
 			wg.Add(1)
-			go func() {
-				if exists == true {
-					toVisit[urlkey] = false
+			go func(urlkey string, exists bool) {
+				if exists {
+					delete(toVisit, urlkey)
 					visited[urlkey] = true
 					tMap := crawler.Crawl(urlkey)
 					controller(tMap)
 				}
 				wg.Done()
-			}()
+			}(urlkey, exists)
+		}
+		if len(toVisit) == 0 {
+			break
 		}
 	}
 	wg.Wait()
