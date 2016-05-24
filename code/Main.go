@@ -3,7 +3,6 @@
 package main
 
 import (
-	"container/list"
 	"fmt"
 	"inda-project/code/crawler"
 	"sync"
@@ -22,7 +21,7 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 // given URL. TODO: add print to a file for all
 // visited URLs.
 func main() {
-	toVisit[startURL]  = true
+	toVisit[startURL] = true
 	var wg sync.WaitGroup
 
 	for {
@@ -32,8 +31,8 @@ func main() {
 				if exists == true {
 					toVisit[urlkey] = false
 					visited[urlkey] = true
-					tList := crawler.Crawl(urlkey)
-					controller(tList)
+					tMap := crawler.Crawl(urlkey)
+					controller(tMap)
 				}
 				wg.Done()
 			}()
@@ -47,10 +46,10 @@ func main() {
 	}
 }
 
-func controller(list List) {
-	for i := range list {
+func controller(m map[string]bool) {
+	for i, _ := range m {
 		if toVisit[i] == false && visited[i] == false {
-			toVisist[i] = true
+			toVisit[i] = true
 		}
 	}
 }
