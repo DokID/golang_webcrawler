@@ -3,7 +3,6 @@
 package crawler
 
 import (
-	"container/list"
 	"io"
 	"log"
 	"net/http"
@@ -14,10 +13,10 @@ import (
 
 // Crawl calls and parses the assigned webpage, looking for URLs and collecting
 // them in a list.
-func Crawl(url string) *list.List {
+func Crawl(url string) map[string]bool {
 	body := getPage(url)
 	defer body.Close()
-	list := list.New()
+	m := make(map[string]bool)
 	tokenizer := html.NewTokenizer(body)
 
 	for {
@@ -31,7 +30,7 @@ func Crawl(url string) *list.List {
 			}
 			// EOF, no more links to be found
 			log.Println("Error: EOF")
-			return list
+			return m
 		case html.StartTagToken:
 			// Start tag has been located
 			token := tokenizer.Token()
@@ -48,7 +47,7 @@ func Crawl(url string) *list.List {
 			}
 			// Check if href is relevant
 			if strings.Index(href, "/wiki/") == 0 {
-				list.PushFront(href)
+				m[href] = true
 				log.Println("URL located!")
 			}
 
