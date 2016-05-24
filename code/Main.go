@@ -23,7 +23,8 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 func main() {
 	list := list.New()
 	list = crawler.Crawl(startURL)
-	for e := list.Front(); e != nil; e.Next() {
-		fmt.Println(e.Value)
-	}
+	//for e := list.Front(); e != nil; e.Next() {
+	//	fmt.Println(e.Value)
+	//}
+	fmt.Print(list.Len())
 }
