@@ -28,8 +28,6 @@ func Crawl(url string) map[string]bool {
 			if tokenizer.Err() != io.EOF {
 				log.Printf("Token Error: %v", tokenizer.Err())
 			}
-			// EOF, no more links to be found
-			log.Println("Error: EOF")
 			return m
 		case html.StartTagToken:
 			// Start tag has been located
@@ -39,7 +37,6 @@ func Crawl(url string) map[string]bool {
 				continue
 			}
 
-			log.Println("Token found!")
 			// Look for href in token
 			found, href := getHref(token)
 			if !found {
@@ -48,9 +45,7 @@ func Crawl(url string) map[string]bool {
 			// Check if href is relevant
 			if strings.Index(href, "/wiki/") == 0 {
 				m[href] = true
-				log.Println("URL located!")
 			}
-
 		}
 	}
 }
@@ -66,7 +61,6 @@ func getPage(url string) (body io.ReadCloser) {
 		log.Fatalf("Response Error: %v", err)
 	}
 	body = resp.Body
-	log.Println("Body received!")
 	return
 }
 
@@ -76,7 +70,6 @@ func getHref(t html.Token) (found bool, href string) {
 		if a.Key == "href" {
 			href = a.Val
 			found = true
-			log.Println("Href found!")
 		}
 	}
 	return
