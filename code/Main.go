@@ -3,7 +3,6 @@
 package main
 
 import (
-	"container/list"
 	"fmt"
 	"inda-project/code/crawler"
 )
@@ -21,10 +20,9 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 // given URL. TODO: add print to a file for all
 // visited URLs.
 func main() {
-	list := list.New()
-	list = crawler.Crawl(startURL)
-	//for e := list.Front(); e != nil; e.Next() {
-	//	fmt.Println(e.Value)
-	//}
-	fmt.Print(list.Len())
+	m := crawler.Crawl(startURL)
+	fmt.Println(len(m))
+	for key, _ := range m {
+		fmt.Println(key)
+	}
 }
