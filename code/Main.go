@@ -1,4 +1,4 @@
-// Gábor Nagy and Niklas Ingemar Bergdahl 2016-05-16
+// Gábor Nagy and Niklas Ingemar Bergdahl 2016-05-25
 
 package main
 
@@ -25,8 +25,7 @@ var lib = &library{visited: map[string]bool{}, toVisit: map[string]bool{}}
 var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 
 // The main function, starts the crawler on a
-// given URL. TODO: add print to a file for all
-// visited URL:s.
+// given URL and prints out all of the visited URLs
 func main() {
 	lib.toVisit[startURL] = true
 	wg := new(sync.WaitGroup)
