@@ -9,11 +9,17 @@ import (
 	"sync"
 )
 
-// A hash map containing the visited URL:s
-var visited = make(map[string]bool)
+// The library struct hold a map with visited links,
+// one with links to be visited as well as a Mutex
+// lock.
+type library struct {
+	sync.Mutex
+	visited map[string]bool
+	toVisit map[string]bool
+}
 
-// A hash map containing the URLs to be visited
-var toVisit = make(map[string]bool)
+// Initialize library maps
+var lib = &library{visited: map[string]bool{}, toVisit: map[string]bool{}}
 
 // The URL to start from
 var startURL = "http://en.wikipedia.org/wiki/Main_Page"
@@ -22,42 +28,38 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 // given URL. TODO: add print to a file for all
 // visited URL:s.
 func main() {
-	toVisit[startURL] = true
-	wg1, wg2 := new(sync.WaitGroup), new(sync.WaitGroup)
-	mutex := new(sync.Mutex)
+	lib.toVisit[startURL] = true
+	wg := new(sync.WaitGroup)
 
 	// The main for-loop responsible for sending crawlers to all known pages
 	for {
-		for urlkey, exists := range toVisit {
-			wg1.Add(1)
-			wg2.Add(1)
+		for urlkey, exists := range lib.toVisit {
+			wg.Add(1)
 			// A crawler thread starts
 			go func(urlkey string, exists bool) {
 				if exists {
-					mutex.Lock()
-					delete(toVisit, urlkey)
-					visited[urlkey] = true
+					lib.Lock()
+					delete(lib.toVisit, urlkey)
+					lib.visited[urlkey] = true
 					tMap := crawler.Crawl(urlkey)
 					controller(tMap)
-					mutex.Unlock()
+					lib.Unlock()
 					runtime.Gosched()
+					for i := range tMap {
+						fmt.Println(i)
+					}
 				}
-				wg1.Done()
-				wg2.Done()
+				wg.Done()
 			}(urlkey, exists)
-			for i := range visited {
-				fmt.Println(i)
-			}
 		}
-		wg1.Wait()
+		wg.Wait()
 		// If no more pages left to visit, break
-		if len(toVisit) == 0 {
+		if len(lib.toVisit) == 0 {
 			break
 		}
 	}
-	wg2.Wait()
 	// When done crawling, print found URL:s
-	for urlkey, exists := range visited {
+	for urlkey, exists := range lib.visited {
 		if exists {
 			fmt.Println(urlkey)
 		}
@@ -68,8 +70,8 @@ func main() {
 // unvisited pages to the queue.
 func controller(tMap map[string]bool) {
 	for i := range tMap {
-		if visited[i] == false {
-			toVisit[i] = true
+		if lib.visited[i] == false {
+			lib.toVisit[i] = true
 		}
 	}
 }
