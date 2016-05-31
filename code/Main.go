@@ -7,6 +7,7 @@ import (
 	"inda-project/code/crawler"
 	"runtime"
 	"sync"
+	"time"
 )
 
 // The library struct hold a map with visited links,
@@ -33,6 +34,11 @@ func main() {
 	// The main for-loop responsible for sending crawlers to all known pages
 	for {
 		for urlkey, exists := range lib.toVisit {
+			// A crawler thread starts
+			fmt.Println(runtime.NumGoroutine())
+			for runtime.NumGoroutine() >= 200 {
+				time.Sleep(10 * time.Millisecond)
+			}
 			wg.Add(1)
 			// A crawler thread starts
 			go func(urlkey string, exists bool) {
@@ -44,9 +50,6 @@ func main() {
 					controller(tMap)
 					lib.Unlock()
 					runtime.Gosched()
-					for i := range tMap {
-						fmt.Println(i)
-					}
 				}
 				wg.Done()
 			}(urlkey, exists)
