@@ -45,6 +45,10 @@ func Crawl(url string) map[string]bool {
 			}
 			// Check if href is relevant
 			if strings.Index(href, "/wiki/") == 0 {
+				// Check if href is a hastag or special category
+				if strings.Contains(href, "#") || strings.Contains(href, ":") {
+					continue
+				}
 				// Append domain
 				href = append(href)
 				m[href] = true
@@ -81,7 +85,7 @@ func getHref(t html.Token) (found bool, href string) {
 // Helper function used to append the start of the URL to the href
 func append(href string) string {
 	buffer := new(bytes.Buffer)
-	buffer.WriteString("http://en.wikipedia.org")
+	buffer.WriteString("http://simple.wikipedia.org")
 	buffer.WriteString(href)
 	return buffer.String()
 }
