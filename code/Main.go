@@ -32,13 +32,10 @@ var startURL = "http://en.wikipedia.org/wiki/Main_Page"
 func main() {
 	lib.toVisit[startURL] = true
 	ch_count, ch_save := make(chan string, 20000000), make(chan string, 20000000)
-
 	// Add starting URL to counting channel
 	ch_count <- startURL
-
 	// Start filewriter
 	go save(ch_save)
-
 	// The main for-loop responsible for sending crawlers to all known pages
 	for urlkey := range ch_count {
 		// Count running go-routines
@@ -56,8 +53,8 @@ func main() {
 			tMap := crawler.Crawl(urlkey)
 			lib.Lock()
 			controller(tMap, ch_count)
+			fmt.Println(len(lib.visited), len(lib.toVisit), len(ch_count))
 			lib.Unlock()
-			fmt.Println(len(lib.visited), len(lib.toVisit))
 			runtime.Gosched()
 		}(urlkey)
 	}
@@ -70,6 +67,7 @@ func main() {
 // unvisited pages to the queue.
 func controller(tMap map[string]bool, ch_count chan<- string) {
 	for i := range tMap {
+		// Check if the address has been visited or is in queue
 		if lib.visited[i] == false && lib.toVisit[i] == false {
 			lib.toVisit[i] = true
 			ch_count <- i
