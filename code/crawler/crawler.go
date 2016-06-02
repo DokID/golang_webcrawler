@@ -62,11 +62,9 @@ func getPage(url string) (body io.ReadCloser) {
 	// Retrieve the page
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("HTTP Error: %v", err)
-	}
-	if err != nil {
 		log.Fatalf("Response Error: %v", err)
 	}
+	resp.Close = true
 	body = resp.Body
 	return
 }
