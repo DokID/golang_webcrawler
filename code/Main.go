@@ -39,7 +39,7 @@ func main() {
 	// The main for-loop responsible for sending crawlers to all known pages
 	for urlkey := range ch_count {
 		// Count running go-routines
-		for runtime.NumGoroutine() >= 2000 {
+		for runtime.NumGoroutine() >= 1000 {
 			// If too many, sleep
 			time.Sleep(100 * time.Millisecond)
 		}
