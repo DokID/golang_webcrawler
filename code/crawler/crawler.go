@@ -1,4 +1,4 @@
-// Gábor Nagy and Niklas Ingemar Bergdahl 2016-05-25
+// Gábor Nagy and Niklas Ingemar Bergdahl
 
 package crawler
 

@@ -1,10 +1,10 @@
-// Gábor Nagy and Niklas Ingemar Bergdahl 2016-05-25
+// Gábor Nagy and Niklas Ingemar Bergdahl
 
 package main
 
 import (
 	"fmt"
-	"inda-project/code/crawler"
+	"golang_webcrawler/code/crawler"
 	"log"
 	"os"
 	"runtime"
